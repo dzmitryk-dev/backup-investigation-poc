@@ -20,4 +20,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Backup Investigation POC"
+
 include(":app")
+include(":common")
