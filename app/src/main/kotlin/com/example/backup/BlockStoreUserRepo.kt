@@ -11,10 +11,6 @@ import common.utils.toByteArray
 import common.utils.toSerializable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 private const val KEY = "com.example.backup.user"
 private const val TAG = "BlockStoreUserRepo"
