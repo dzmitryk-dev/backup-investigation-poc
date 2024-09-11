@@ -28,12 +28,16 @@ class BlockStoreUserRepo(
     }
 
     private fun fetchUser() {
+        Log.d(TAG, "Fetching user")
         val retrieveRequest = RetrieveBytesRequest.Builder().setKeys(listOf(KEY)).build()
         client.retrieveBytes(retrieveRequest)
             .addOnSuccessListener { response ->
+                Log.d(TAG, "Retrieved ${response.blockstoreDataMap}")
                 response.blockstoreDataMap[KEY]?.let { value ->
+                    Log.d(TAG, "Retrieved $value")
                     userFlow.value = value.bytes.toSerializable()
                 } ?: run {
+                    Log.d(TAG, "No data Retrieved. Return EMPTY Use")
                     userFlow.value = User.EMPTY
                 }
             }
@@ -43,6 +47,7 @@ class BlockStoreUserRepo(
     }
 
     override suspend fun saveUser(user: User) {
+        Log.d(TAG, "Save user")
         val storeRequest1 = StoreBytesData.Builder()
             // Call this method to set the key value with which the data should be associated with.
             .setBytes(user.toByteArray())
@@ -51,6 +56,7 @@ class BlockStoreUserRepo(
         client.storeBytes(storeRequest1)
             .addOnSuccessListener { result: Int ->
                 Log.d(TAG, "Stored $result bytes")
+                fetchUser()
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "Failed to store bytes", e)
