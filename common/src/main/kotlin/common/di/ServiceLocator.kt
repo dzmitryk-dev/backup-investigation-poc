@@ -8,9 +8,9 @@ interface ServiceLocator {
 }
 
 fun provideServiceLocator(
-    userRepoFactory: () -> MemoryUserRepo = { MemoryUserRepo() }
+    userRepoFactory: () -> UserRepo = { MemoryUserRepo() }
 ): ServiceLocator {
     return object : ServiceLocator {
-        override val userRepo: UserRepo = userRepoFactory()
+        override val userRepo: UserRepo by lazy { userRepoFactory() }
     }
 }
