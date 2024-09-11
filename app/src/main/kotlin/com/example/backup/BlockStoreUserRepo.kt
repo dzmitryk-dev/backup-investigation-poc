@@ -52,6 +52,7 @@ class BlockStoreUserRepo(
             // Call this method to set the key value with which the data should be associated with.
             .setBytes(user.toByteArray())
             .setKey(KEY)
+            .setShouldBackupToCloud(true)
             .build()
         client.storeBytes(storeRequest1)
             .addOnSuccessListener { result: Int ->
