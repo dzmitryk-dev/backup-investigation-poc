@@ -21,5 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Backup Investigation POC"
 
-include(":app")
+include(":blockstore")
 include(":common")
