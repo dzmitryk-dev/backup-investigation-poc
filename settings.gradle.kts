@@ -23,3 +23,4 @@ rootProject.name = "Backup Investigation POC"
 
 include(":blockstore")
 include(":common")
+include(":credential-manager")
