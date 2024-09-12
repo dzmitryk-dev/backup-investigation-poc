@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.backup"
+    namespace = "com.example.backup.blockstore"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.backup"
+        applicationId = "com.example.backup.blockstore"
         minSdk = 28
         targetSdk = 35
         versionCode = 1
@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
     implementation(libs.google.play.services.blockstore)
 
     debugImplementation(libs.androidx.ui.tooling)

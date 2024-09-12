@@ -1,17 +1,15 @@
 package com.example.credentialmanager
 
 import android.content.Context
-import androidx.credentials.GetCredentialRequest
 import androidx.credentials.CredentialManager
-import androidx.credentials.GetCredentialResponse
 import common.domain.User
-import common.domain.UserRepo
+import common.domain.DataRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class CredentialsUserRepo(
     private val context: Context
-) : UserRepo {
+) : DataRepo {
 
     private val credentialManager = CredentialManager.create(context)
 

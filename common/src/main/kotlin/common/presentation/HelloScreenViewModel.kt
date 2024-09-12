@@ -4,33 +4,44 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import common.di.ServiceLocator
-import common.domain.User
-import common.domain.UserRepo
+import common.domain.DataRepo
+import common.domain.DataState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.random.Random
 
 class HelloScreenViewModel(
-    private val userRepo: UserRepo
+    private val dataRepo: DataRepo
 ) : ViewModel() {
 
-    val user: StateFlow<User> = userRepo.getUser()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = User.EMPTY
-        )
+    private val _generatedData = MutableStateFlow<DataState>(DataState.EMPTY)
+    val generatedData: StateFlow<DataState> = _generatedData
+    private val _readDataState = MutableStateFlow<DataState>(DataState.EMPTY)
+    val readDataState: StateFlow<DataState> = _readDataState
 
-
-    fun saveUser(name: String, surname: String, age: String) {
+    fun reReadData() {
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
-                userRepo.saveUser(User(name, surname, age.toInt(Random.nextInt(10, 15)), generateRandomAlphaNumericString(10)))
+                _readDataState.value = DataState.LOADING
+                val data = dataRepo.getData()
+                if (data != null) {
+                    DataState.Data(data)
+                } else {
+                    DataState.EMPTY
+                }.let { _readDataState.value = it }
+            }
+        }
+    }
+
+    fun generateAndSave(length: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.Default) {
+                _generatedData.value = DataState.LOADING
+                val data = generateRandomAlphaNumericString(length)
+                dataRepo.saveData(data)
+                _generatedData.value = DataState.Data(data)
             }
         }
     }

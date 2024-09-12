@@ -1,4 +1,4 @@
-package com.example.backup.ui.theme
+package com.example.backup.blockstore.ui.theme
 
 import android.app.Activity
 import android.os.Build

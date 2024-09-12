@@ -1,16 +1,16 @@
 package common.di
 
-import common.domain.MemoryUserRepo
-import common.domain.UserRepo
+import common.domain.MemoryDataRepo
+import common.domain.DataRepo
 
 interface ServiceLocator {
-    val userRepo: UserRepo
+    val userRepo: DataRepo
 }
 
 fun provideServiceLocator(
-    userRepoFactory: () -> UserRepo = { MemoryUserRepo() }
+    userRepoFactory: () -> DataRepo = { MemoryDataRepo() }
 ): ServiceLocator {
     return object : ServiceLocator {
-        override val userRepo: UserRepo by lazy { userRepoFactory() }
+        override val userRepo: DataRepo by lazy { userRepoFactory() }
     }
 }

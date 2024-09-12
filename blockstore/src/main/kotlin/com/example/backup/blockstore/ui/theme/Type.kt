@@ -1,4 +1,4 @@
-package com.example.backup.ui.theme
+package com.example.backup.blockstore.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
