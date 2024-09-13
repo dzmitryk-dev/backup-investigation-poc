@@ -32,7 +32,8 @@ fun DataScreen(
     readDataState: State<DataState>,
     generatedData: State<DataState>,
     reReadData: () -> Unit,
-    generateAndSaveFunction: (Int) -> Unit
+    generateAndSaveFunction: (Int) -> Unit,
+    removeData: () -> Unit,
 ) {
 
     var length by rememberSaveable { mutableStateOf("12") }
@@ -68,6 +69,11 @@ fun DataScreen(
                 generateAndSaveFunction(length.toInt())
             },
         ) { Text("Save") }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = { removeData() },
+        ) { Text("Remove") }
     }
 }
 
@@ -104,6 +110,7 @@ private fun PreviewDataScreen() {
     DataScreen(
         readDataState,
         generatedDataState,
+        {},
         {},
         {}
     )

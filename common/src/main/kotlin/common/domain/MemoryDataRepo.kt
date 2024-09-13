@@ -9,4 +9,8 @@ class MemoryDataRepo : DataRepo {
     override suspend fun saveData(message: String) {
         data = message
     }
+
+    override suspend fun removeData() {
+        data = null
+    }
 }

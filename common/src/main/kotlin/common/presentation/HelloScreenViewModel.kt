@@ -46,6 +46,23 @@ class HelloScreenViewModel(
         }
     }
 
+    fun removeData() {
+        viewModelScope.launch {
+            withContext(Dispatchers.Default) {
+                _readDataState.value = DataState.LOADING
+                _generatedData.value = DataState.LOADING
+                dataRepo.removeData()
+                _generatedData.value = DataState.EMPTY
+                val data = dataRepo.getData()
+                if (data != null) {
+                    DataState.Data(data)
+                } else {
+                    DataState.EMPTY
+                }.let { _readDataState.value = it }
+            }
+        }
+    }
+
     private fun generateRandomAlphaNumericString(length: Int): String {
         val charset = ('a'..'z') + ('A'..'Z') + ('0'..'9')
         return List(length) { charset.random() }.joinToString("")

@@ -3,6 +3,7 @@ package com.example.backup.blockstore
 import android.content.Context
 import android.util.Log
 import com.google.android.gms.auth.blockstore.Blockstore
+import com.google.android.gms.auth.blockstore.DeleteBytesRequest
 import com.google.android.gms.auth.blockstore.RetrieveBytesRequest
 import com.google.android.gms.auth.blockstore.StoreBytesData
 import common.domain.DataRepo
@@ -65,6 +66,21 @@ class BlockStoreUserRepo(
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "Failed to store bytes", e)
+            }
+    }
+
+    override suspend fun removeData() {
+        Log.d(TAG, "Remove Data")
+        val client = Blockstore.getClient(context)
+
+        val retrieveRequest = DeleteBytesRequest.Builder().setKeys(listOf(KEY)).build()
+
+        client.deleteBytes(retrieveRequest)
+            .addOnSuccessListener { response ->
+                Log.d(TAG, "Deleted $response")
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, "Failed to delete data", exception)
             }
     }
 }

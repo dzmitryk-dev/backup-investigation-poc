@@ -45,7 +45,8 @@ class MainActivity : ComponentActivity() {
                             readDataState = viewModel.readDataState.collectAsState(),
                             generatedData = viewModel.generatedData.collectAsState(),
                             reReadData = viewModel::reReadData,
-                            generateAndSaveFunction = viewModel::generateAndSave
+                            generateAndSaveFunction = viewModel::generateAndSave,
+                            removeData = viewModel::removeData
                         )
                     }
                 }
