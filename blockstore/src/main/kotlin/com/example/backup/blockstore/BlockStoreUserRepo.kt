@@ -60,13 +60,17 @@ class BlockStoreUserRepo(
             .setKey(KEY)
             .setShouldBackupToCloud(true)
             .build()
-        client.storeBytes(storeRequest1)
-            .addOnSuccessListener { result: Int ->
-                Log.d(TAG, "Stored $result bytes with key $KEY")
-            }
-            .addOnFailureListener { e ->
-                Log.e(TAG, "Failed to store bytes", e)
-            }
+        suspendCancellableCoroutine { continuation ->
+            client.storeBytes(storeRequest1)
+                .addOnSuccessListener { result: Int ->
+                    Log.d(TAG, "Stored $result bytes with key $KEY")
+                    continuation.resumeWith(Result.success(Unit))
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Failed to store bytes", e)
+                    continuation.resumeWithException(e)
+                }
+        }
     }
 
     override suspend fun removeData() {
@@ -75,12 +79,16 @@ class BlockStoreUserRepo(
 
         val retrieveRequest = DeleteBytesRequest.Builder().setKeys(listOf(KEY)).build()
 
-        client.deleteBytes(retrieveRequest)
-            .addOnSuccessListener { response ->
-                Log.d(TAG, "Deleted $response")
-            }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, "Failed to delete data", exception)
-            }
+        suspendCancellableCoroutine { continuation ->
+            client.deleteBytes(retrieveRequest)
+                .addOnSuccessListener { response ->
+                    Log.d(TAG, "Deleted $response")
+                    continuation.resumeWith(Result.success(Unit))
+                }
+                .addOnFailureListener { exception ->
+                    Log.e(TAG, "Failed to delete data", exception)
+                    continuation.resumeWithException(exception)
+                }
+        }
     }
 }
